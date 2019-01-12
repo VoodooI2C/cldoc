@@ -62,7 +62,12 @@ def create_test_static(name, files, ofiles):
             exp = open(f).read()
 
             self.maxDiff = None
-            self.assertMultiLineEqual(got, exp)
+
+            try:
+                self.assertMultiLineEqual(got, exp)
+            except AssertionError as e:
+                e.args = ("In file: {}: \n".format(f) + e.args[0],)
+                raise e
 
         fs.fs.rmtree(gendir)
 
