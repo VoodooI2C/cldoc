@@ -15,6 +15,11 @@ from .ctype import Type
 
 from ..clang import cindex
 
+
+def cmp(a, b):
+    return (a > b) - (a < b)
+
+
 class Field(Node):
     kind = cindex.CursorKind.FIELD_DECL
 

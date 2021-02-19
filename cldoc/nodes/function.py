@@ -99,8 +99,6 @@ class Function(Node):
 
     @property
     def semantic_parent(self):
-        from namespace import Namespace
-
         parent = self.parent
 
         while not parent is None and not isinstance(parent, Namespace):
