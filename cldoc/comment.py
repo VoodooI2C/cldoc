@@ -470,7 +470,6 @@ class CommentsDatabase(object):
 from pyparsing import *
 
 class Parser:
-    ParserElement.setDefaultWhitespaceChars(' \t\r')
 
     identifier = Word(alphas + '_', alphanums + '_')
 
