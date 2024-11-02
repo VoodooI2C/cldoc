@@ -1,3 +1,15 @@
+# This file is part of cldoc.  cldoc is free software: you can
+# redistribute it and/or modify it under the terms of the GNU General Public
+# License as published by the Free Software Foundation, version 2.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along with
+# this program; if not, write to the Free Software Foundation, Inc., 51
+# Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #===- cindex.py - Python Indexing Library Bindings -----------*- python -*--===#
 #
 # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
@@ -64,7 +76,7 @@ from __future__ import absolute_import, division, print_function
 
 from ctypes import *
 
-import clang.enumerations
+from . import enumerations
 
 import os
 import sys
@@ -1753,6 +1765,9 @@ class Cursor(Structure):
 
         return self._hash
 
+    def __hash__(self):
+        return self.hash
+
     @property
     def semantic_parent(self):
         """Return the semantic parent for this cursor."""
@@ -1883,6 +1898,20 @@ class Cursor(Structure):
         Retrieve the width of a bitfield.
         """
         return conf.lib.clang_getFieldDeclBitWidth(self)
+
+    @property
+    def specialized_cursor_template(self):
+        """
+        Retrieve the specialized cursor template.
+        """
+        return conf.lib.clang_getSpecializedCursorTemplate(self)
+
+    @property
+    def template_cursor_kind(self):
+        """
+        Retrieve the template cursor kind.
+        """
+        return conf.lib.clang_getTemplateCursorKind(self)
 
     @staticmethod
     def from_result(res, fn, args):
@@ -4189,7 +4218,7 @@ class Config(object):
         return True
 
 def register_enumerations():
-    for name, value in clang.enumerations.TokenKinds:
+    for name, value in enumerations.TokenKinds:
         TokenKind.register(value, name)
 
 conf = Config()
